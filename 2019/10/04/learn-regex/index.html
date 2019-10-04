@@ -15,7 +15,7 @@
     <meta name="description" content>
     <meta name="Cache-Control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>浅析systemd · 帅气咕杂货间</title>
+    <title>(转载)learn-regex · 帅气咕杂货间</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -210,7 +210,7 @@
                 <a href="/" >帅气咕杂货间</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">浅析systemd</a>
+                <a href="#" class="post-name">(转载)learn-regex</a>
             </div>
     </div>
     
@@ -242,7 +242,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            浅析systemd
+            (转载)learn-regex
             <!-- 404 -->
             
         </h1>
@@ -261,18 +261,18 @@ height:50vh;
                 
                     <div class= post-intro-tags >
     
-        <a class="post-tag" href="javascript:void(0);" data-tags = "systemd">systemd</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags = "正则表达式">正则表达式</a>
     
 </div>
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count">4,640</span> / Reading time: <span class="post-count">17 min</span></span>
+                        <span>Word count: <span class="post-count">3,444</span> / Reading time: <span class="post-count">13 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/09/09</span>
+                    <span class="post-intro-time">2019/10/04</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -396,243 +396,414 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>《鸟哥的Linux私房菜》</p>
-<h2 id="daemon与service"><a href="#daemon与service" class="headerlink" title="daemon与service"></a>daemon与service</h2><ul>
-<li><p>service是系统为了实现某些功能而必须要提供的一些服务。</p>
-</li>
-<li><p>service的提供总是需要程序的运行。所以达成这个service的程序称为daemon。</p>
-</li>
-<li><p>比如达成循环型例行性工作调度服务（service）的程序 就是 crond这个daemon</p>
-</li>
-<li><p>达成某个服务需要一支daemon在背景中运行，没有这支daemon就不会有service</p>
-</li>
-<li>daemon是一只程序(program)执行后的程序(process),通常daemon所处的原本程序(program)命名为{xxx}d.例如atd和crond</li>
+        <h2 id="什么是正则表达式"><a href="#什么是正则表达式" class="headerlink" title="什么是正则表达式?"></a>什么是正则表达式?</h2><blockquote>
+<p>正则表达式是一组由字母和符号组成的特殊文本, 它可以用来从文本中找出满足你想要的格式的句子.</p>
+</blockquote>
+<p>一个正则表达式是在一个主体字符串中从左到右匹配字符串时的一种样式.<br>“Regular expression”这个词比较拗口, 我们常使用缩写的术语”regex”或”regexp”.<br>正则表达式可以从一个基础字符串中根据一定的匹配模式替换文本中的字符串、验证表单、提取字符串等等.</p>
+<p>想象你正在写一个应用, 然后你想设定一个用户命名的规则, 让用户名包含字符,数字,下划线和连字符,以及限制字符的个数,好让名字看起来没那么丑.<br>我们使用以下正则表达式来验证一个用户名:</p>
+<p><br><br></p>
+<p align="center"><br>  <img src="../img/regexp-cn.png" alt="Regular expression"><br></p>
+
+<p>以上的正则表达式可以接受 <code>john_doe</code>, <code>jo-hn_doe</code>, <code>john12_as</code>.<br>但不匹配<code>Jo</code>, 因为它包含了大写的字母而且太短了.</p>
+<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><ul>
+<li><a href="#1-基本匹配">1. 基本匹配</a></li>
+<li><a href="#2-元字符">2. 元字符</a></li>
+<li><a href="#21-点运算符-">2.1 点运算符 .</a></li>
+<li><a href="#22-字符集">2.2 字符集</a><ul>
+<li><a href="#221-否定字符集">2.2.1 否定字符集</a></li>
+<li><a href="#23-重复次数">2.3 重复次数</a><ul>
+<li><a href="#231--号">2.3.1 * 号</a></li>
+<li><a href="#232--号">2.3.2 + 号</a></li>
+<li><a href="#233--号">2.3.3 ? 号</a></li>
 </ul>
-<h2 id="systemd的好处"><a href="#systemd的好处" class="headerlink" title="systemd的好处"></a>systemd的好处</h2><ul>
-<li>平行处理所有服务，相较于init。systemd可以平行启动所有没有相互依赖的服务。</li>
-<li>一经要求就回应(on-demand)(按需启动)的启动方式：systemd全部就是仅有一只systemd服务搭配systemctl指令来处理。此外，systemd常驻内存，当有任何需要（on-demand)时，都可以立即处理后续的daemon启动服务。</li>
-<li>服务相依性自我检查：由于systemd可以自订服务相依性的检查，因此如果B服务是架构在A服务上启动的，那么在没有启动服务A的情况下启动服务B，systemd会自动启动服务A。</li>
-<li>依daemon功能分类：systemd管理的服务非常多，为了清晰服务的功能，首先systemd先定义所有的服务为一个服务单位(unit)，并将该unit归类到不同的服务类型去(type)，systemd将服务单位区分为service,socket,target,path,snapshot,timer等不同的类型(type)。</li>
-<li>将多个daemons集合成一个群组。systemd可以将许多个功能集合为一个所谓的target项目，这个项目只要在设计操作环境的创建，所以是集合了许多的daemons，亦即是执行某个target就是执行好多个daemon的意思</li>
-<li>向下兼容旧的init服务脚本：基本上，systemd是可以相容于init的服务脚本的。因此，就的init启动脚本也能通过systemd来管理。</li>
+</li>
+<li><a href="#24--号">2.4 {} 号</a></li>
+<li><a href="#25--特征标群">2.5 (…) 特征标群</a></li>
+<li><a href="#26--或运算符">2.6 | 或运算符</a></li>
+<li><a href="#27-转码特殊字符">2.7 转码特殊字符</a></li>
+<li><a href="#28-锚点">2.8 锚点</a><ul>
+<li><a href="#281--号">2.8.1 ^ 号</a></li>
+<li><a href="#282--号">2.8.2 $ 号</a></li>
 </ul>
-<h2 id="system配置文件目录"><a href="#system配置文件目录" class="headerlink" title="system配置文件目录"></a>system配置文件目录</h2><p>基本上，systemd将过去所谓的daemon执行脚本通通称为一个服务单位(unit),而每种服务依据功能分为了不同的类型(type)。基本的类型有系统服务、数据监听和交换的插槽档服务(socket)、储存系统状态的快照类型、提供不同类似执行等级分类的操作环境(target)等等。所有的配置文件都放置于下面的目录中：</p>
-<ul>
-<li>/usr/lib/systemd/system/：每个服务最主要的启动脚本设置，类似于/etc/init.d下面的文件</li>
-<li>/run/systemd/system/：系统执行过程中所产生的服务脚本，这些脚本的优先级要高于/usr/lib/systemd/system/</li>
-<li>/etc/systemd/system/：管理员依据主机系统的需求所创建的执行脚本，优先级高于/run/systemd/system/</li>
+</li>
 </ul>
-<p>所以，系统开机时会不会执行某些服务，是根据/etc/systemd/system/下的设置（优先级高），所以该目录下是一大堆链接文件，而实际执行的systemd启动脚本配置文件都是放置在/usr/lib/systemd/system/下面的。因此，如果需要修改某个服务启动的设置，应该要去/usr/lib/systemd/system/下面修改才对，/etc/systemd/system/仅是链接到正确的执行脚本配置文件而已。</p>
-<h2 id="systemd的unit分类说明"><a href="#systemd的unit分类说明" class="headerlink" title="systemd的unit分类说明"></a>systemd的unit分类说明</h2><p>/usr/lib/systemd/system/以下的数据根据扩展名进行区分type。</p>
+</li>
+<li><a href="#3-简写字符集">3. 简写字符集</a></li>
+<li><a href="#4-零宽度断言前后预查">4. 零宽度断言(前后预查)</a><ul>
+<li><a href="#41--正先行断言">4.1 ?=… 正先行断言</a></li>
+<li><a href="#42--负先行断言">4.2 ?!… 负先行断言</a></li>
+<li><a href="#43---正后发断言">4.3 ?&lt;= … 正后发断言</a></li>
+<li><a href="#44--负后发断言">4.4 ?&lt;!… 负后发断言</a></li>
+</ul>
+</li>
+<li><a href="#5-标志">5. 标志</a><ul>
+<li><a href="#51-忽略大小写-case-insensitive">5.1 忽略大小写 (Case Insensitive)</a></li>
+<li><a href="#52-全局搜索-global-search">5.2 全局搜索 (Global search)</a></li>
+<li><a href="#53-多行修饰符-multiline">5.3 多行修饰符 (Multiline)</a></li>
+</ul>
+</li>
+<li><a href="#额外补充">额外补充</a></li>
+<li><a href="#贡献">贡献</a></li>
+<li><a href="#许可证">许可证</a></li>
+</ul>
+<h2 id="1-基本匹配"><a href="#1-基本匹配" class="headerlink" title="1. 基本匹配"></a>1. 基本匹配</h2><p>正则表达式其实就是在执行搜索时的格式, 它由一些字母和数字组合而成.<br>例如: 一个正则表达式 <code>the</code>, 它表示一个规则: 由字母<code>t</code>开始,接着是<code>h</code>,再接着是<code>e</code>.</p>
+<pre>
+"the" => The fat cat sat on <a href="#learn-regex"><strong>the</strong></a> mat.
+</pre>
+
+<p><a href="https://regex101.com/r/dmRygT/1" target="_blank" rel="noopener">在线练习</a></p>
+<p>正则表达式<code>123</code>匹配字符串<code>123</code>. 它逐个字符的与输入的正则表达式做比较.</p>
+<p>正则表达式是大小写敏感的, 所以<code>The</code>不会匹配<code>the</code>.</p>
+<pre>
+"The" => <a href="#learn-regex"><strong>The</strong></a> fat cat sat on the mat.
+</pre>
+
+<p><a href="https://regex101.com/r/1paXsy/1" target="_blank" rel="noopener">在线练习</a></p>
+<h2 id="2-元字符"><a href="#2-元字符" class="headerlink" title="2. 元字符"></a>2. 元字符</h2><p>正则表达式主要依赖于元字符.<br>元字符不代表他们本身的字面意思, 他们都有特殊的含义. 一些元字符写在方括号中的时候有一些特殊的意思. 以下是一些元字符的介绍:</p>
 <table>
 <thead>
 <tr>
-<th>扩展名</th>
-<th>主要服务功能</th>
+<th style="text-align:center">元字符</th>
+<th>描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>.service</td>
-<td>一般服务类型(service unit):主要是系统服务，包括服务器本身所需要的本机服务以及网络服务都是，比较经常使用到的服务大多是这种类型，所以也是最常见的类型！</td>
+<td style="text-align:center">.</td>
+<td>句号匹配任意单个字符除了换行符.</td>
 </tr>
 <tr>
-<td>.socket</td>
-<td>内部程序数据交换的插槽服务 （socket unit）：主要是 IPC （Interprocess communication） 的传输讯息插槽档 （socket file） 功能。 这种 类型的服务通常在监控讯息传递的插槽档，当有通过此插槽档传递讯息来 说要链接服务时，就依据当时的状态将该用户的要求传送到对应的 daemon， 若 daemon 尚未启动，则启动该 daemon 后再传送用户的要 求。使用 socket 类型的服务一般是比较不会被用到的服务，因此在开机时 通常会稍微延迟启动的时间 （因为比较没有这么常用嘛！）。一般用于本 机服务比较多，例如我们的图形界面很多的软件都是通过 socket 来进行本 机程序数据交换的行为。 （这与早期的 xinetd 这个 super daemon 有部份 的相似喔！）</td>
+<td style="text-align:center">[ ]</td>
+<td>字符种类. 匹配方括号内的任意字符.</td>
 </tr>
 <tr>
-<td>.target</td>
-<td>执行环境类型(target unit)：其实是一群unit的集合，例如上面表格中提到的multi-user.target其实就是一堆服务的集合,选择执行multi-user.target就是执行一堆其他.service或.socket之类的服务</td>
+<td style="text-align:center">[^ ]</td>
+<td>否定的字符种类. 匹配除了方括号里的任意字符</td>
 </tr>
 <tr>
-<td>.mount/.automount</td>
-<td>文件系统挂载相关服务(automount unit/mount unit)：例如来自网络的自动挂载、NFS文件系统挂载等与文件系统相关性较高的程序管理。</td>
-</tr>
-<tr>
-<td>.path</td>
-<td>侦测特定文件或目录类型(path unit)：某些服务需要侦测某些特定的目录来提供队列服务，例如最常见的打印服务，就需要通过侦测打印队列目录来启动打印功能！这时候就得要.path的服务类型支持了！</td>
-</tr>
-<tr>
-<td>.timer</td>
-<td>循环执行的服务(timer unit)：这个东西有点累anacrontab.不过是由systemd主动提供的，比anacrontab更有弹性！</td>
+<td style="text-align:center">*</td>
+<td>匹配&gt;=0个重复的在*号之前的字符.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="通过systemctl管理单一服务-service-unit-的启动-开机启动与观察状态"><a href="#通过systemctl管理单一服务-service-unit-的启动-开机启动与观察状态" class="headerlink" title="通过systemctl管理单一服务(service unit)的启动/开机启动与观察状态"></a>通过systemctl管理单一服务(service unit)的启动/开机启动与观察状态</h2><p><img src="https://user-images.githubusercontent.com/25349066/64608306-ee047680-d3fc-11e9-8fc3-260862126f1d.png" alt="image"></p>
-<p>使用systemctl status atd.service 查看atd这个服务的状态</p>
-<p>Loaded: 这行在说明，开机时这个unit会不会启动，enabled为开机启动，disable开机不会启动</p>
-<p>Active:现在这个unit的状态为正在执行(running)或没有执行(dead)</p>
-<p>后面几行则是在说明这个unit程序的PID状态以及最后一行显示这个服务的的登录文件信息</p>
-<p>文件信息格式为:”时间” “讯息发送主机” “哪一个服务的讯息” “实际讯息内容”</p>
-<p>所以上面显示的讯息是： 这个atd服务已启动延迟执行计划的意思。</p>
-<p><img src="https://user-images.githubusercontent.com/25349066/64608795-00cb7b00-d3fe-11e9-8b81-6e6a32b6abb0.png" alt="image"></p>
-<p>使用sytemctl stop atd.service关闭atd服务。不应该使用kill的方式来关掉一个正常的服务，否则systemctl会无法继续监控该服务。最后两行为新增加的登录讯息，告诉我们目前的系统状态。</p>
-<p>第二行中为enabled 表示它在重新开机后仍会启动</p>
-<p>Active几种基本状态：</p>
-<ul>
-<li>active （running）：正有一只或多只程序正在系统中执行的意思，举例来说，正在执行 中的 vsftpd 就是这种模式。 </li>
-<li>active （exited）：仅执行一次就正常结束的服务，目前并没有任何程序在系统中执行，举例来说，开机或者是挂载时才会进行一次的 quotaon 功能，就是这种模式！ quotaon 不须一直执行～只须执行一次之后，就交给文件系统去自行处理啰！通常用 bash shell 写的小型服务，大多是属于这种类型 （无须常驻内存）。</li>
-<li>active （waiting）：正在执行当中，不过还再等待其他的事件才能继续处理。举例来 说，打印的伫列相关服务就是这种状态！ 虽然正在启动中，不过，也需要真的有伫列进 来 （打印工作） 这样他才会继续唤醒打印机服务来进行下一步打印的功能。</li>
-<li>inactive：这个服务目前没有运行的意思。</li>
-</ul>
-<p>daemon几种默认状态：</p>
-<ul>
-<li>enabled：这个daemon将在开机时被执行</li>
-<li>disabled：这个daemon在开机时不会被执行</li>
-<li>static：这个daemon不可以自己启动(enable不可)，不过可能被其他的enabled的服务唤醒(相互依赖)</li>
-<li>mask：这个daemon无论如何都不能被启动，因为已经被强制注销，可通过systemctl unmask方式改回原本状态</li>
-</ul>
-<p><img src="https://user-images.githubusercontent.com/25349066/64609988-c9120280-d400-11e9-9907-c48ca70d7d12.png" alt="image"></p>
-<p>使用systemctl list-units查看所有启动的unit</p>
-<p><img src="https://user-images.githubusercontent.com/25349066/64611188-74bc5200-d403-11e9-8c60-a24e554171cf.png" alt="image"></p>
-<p>使用systemctl list-unit-files查看已安装的所有unit</p>
-<h2 id="systemctl针对service类型的配置文件"><a href="#systemctl针对service类型的配置文件" class="headerlink" title="systemctl针对service类型的配置文件"></a>systemctl针对service类型的配置文件</h2><h3 id="配置文件目录相关"><a href="#配置文件目录相关" class="headerlink" title="配置文件目录相关"></a>配置文件目录相关</h3><p>systemd的配置文件大部分放置于/usr/lib/systemd/system/目录内。但是该目录下的文件是原本软件所提供的位置，1建议不要修改。而要修改的位置应该放置于/etc/systemd/system/目录内。举例来说，如果你想要额外修改vsftpd.service的话，可以放置到:</p>
-<ul>
-<li>/usr/lib/systemd/system/vsftpd.service ：官方的默认配置文件</li>
-<li>/etc/systemd/system/vsftpd.service.d/custom.conf：在/etc/systemd/system下面创建与配置文件相同文件名的目录，但要加上.d扩展名。然后在该目录下创建配置文件即可。另外，配置文件最好附文件名.conf最佳，在这个目录下的文件会“累加其他设置”进入/usr/lib/systemd/system/vsftpd.service内。</li>
-<li>/etc/systemd/system/vsfrpd.service.wants/*：此目录内的文件为链接文件，设置相依服务的链接，意思是启动了vsftpd.service之后，最好再加上这个目录下建议的服务。</li>
-<li>/etc/systemd/system/vsftpd.service.requires：此目录内的文件为链接文件，设置相依服务的链接。意思是启动了vsftpd.service之后，需要事先启动哪些服务的意思。</li>
-</ul>
-<h3 id="systemctl配置文件设置项目"><a href="#systemctl配置文件设置项目" class="headerlink" title="systemctl配置文件设置项目"></a>systemctl配置文件设置项目</h3><p>例如sshd.service </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[Unit] # 这个项目与此unit的解释、执行服相依性有关</span><br><span class="line">Description=OpenBSD Secure Shell server</span><br><span class="line">After=network.target auditd.service # 在此之后启动</span><br><span class="line">ConditionPathExists=!/etc/ssh/sshd_not_to_be_run</span><br><span class="line"></span><br><span class="line">[Service] # 这个项目与实际执行的指令参数有关</span><br><span class="line">EnvironmentFile=-/etc/default/ssh</span><br><span class="line">ExecStartPre=/usr/sbin/sshd -t</span><br><span class="line">ExecStart=/usr/sbin/sshd -D $SSHD_OPTS</span><br><span class="line">ExecReload=/usr/sbin/sshd -t</span><br><span class="line">ExecReload=/bin/kill -HUP $MAINPID</span><br><span class="line">KillMode=process</span><br><span class="line">Restart=on-failure</span><br><span class="line">RestartPreventExitStatus=255</span><br><span class="line">Type=notify</span><br><span class="line">RuntimeDirectory=sshd</span><br><span class="line">RuntimeDirectoryMode=0755</span><br><span class="line"></span><br><span class="line">[Install] # 这个项目说明此unit要挂载哪个target下面</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">Alias=sshd.service</span><br></pre></td></tr></table></figure>
-<ul>
-<li>[Unit] : unit本身的说明，以及与其他相依daemon的设置，包括在什么服务之后才启动此unit之类的设置值。</li>
-<li>[Service], [Socket], [Timer], [Mount], [Path]..：不同的 unit type 就得要使用相对应的设置项目。比如sshd.service就是service。这个项目主要在规范服务启动的脚本、环境配置文件文件名、重新启动的方式等等。</li>
-<li>[Install] : 这个项目就是将此unit安装到哪个target里面去的意思.</li>
-</ul>
-<p>至于配置文件内有些设置规则还是得要说明一下： </p>
-<p>设置项目通常是可以重复的，例如我可以重复设置两个 After 在配置文件中，不过，后面 的设置会取代前面的喔！因此，如果你想要将设置值归零， 可以使用类似“ After= ”的设 置，亦即该项目的等号后面什么都没有，就将该设置归零了 （reset）。 如果设置参数需要有“是/否”的项目 （布林值, boolean），你可以使用 1, yes, true, on 代 表启动，用 0, no, false, off 代表关闭！随你喜好选择啰！ 空白行、开头为 # 或 ; 的那一行，都代表注解！</p>
-<p><strong>Unit部分：</strong></p>
+<p>|+|匹配&gt;=1个重复的+号前的字符.<br>|?|标记?之前的字符为可选.|<br>|{n,m}|匹配num个大括号之前的字符 (n &lt;= num &lt;= m).|<br>|(xyz)|字符集, 匹配与 xyz 完全相等的字符串.|<br>|&#124;|或运算符,匹配符号前或后的字符.|<br>|&#92;|转义字符,用于匹配一些保留的字符 <code>[ ] ( ) { } . * + ? ^ $ \ &#124;</code>|<br>|^|从开始行开始匹配.|<br>|$|从末端开始匹配.|</p>
+<h2 id="2-1-点运算符"><a href="#2-1-点运算符" class="headerlink" title="2.1 点运算符 ."></a>2.1 点运算符 <code>.</code></h2><p><code>.</code>是元字符中最简单的例子.<br><code>.</code>匹配任意单个字符, 但不匹配换行符.<br>例如, 表达式<code>.ar</code>匹配一个任意字符后面跟着是<code>a</code>和<code>r</code>的字符串.</p>
+<pre>
+".ar" => The <a href="#learn-regex"><strong>car</strong></a> <a href="#learn-regex"><strong>par</strong></a>ked in the <a href="#learn-regex"><strong>gar</strong></a>age.
+</pre>
+
+<p><a href="https://regex101.com/r/xc9GkU/1" target="_blank" rel="noopener">在线练习</a></p>
+<h2 id="2-2-字符集"><a href="#2-2-字符集" class="headerlink" title="2.2 字符集"></a>2.2 字符集</h2><p>字符集也叫做字符类.<br>方括号用来指定一个字符集.<br>在方括号中使用连字符来指定字符集的范围.<br>在方括号中的字符集不关心顺序.<br>例如, 表达式<code>[Tt]he</code> 匹配 <code>the</code> 和 <code>The</code>.</p>
+<pre>
+"[Tt]he" => <a href="#learn-regex"><strong>The</strong></a> car parked in <a href="#learn-regex"><strong>the</strong></a> garage.
+</pre>
+
+<p><a href="https://regex101.com/r/2ITLQ4/1" target="_blank" rel="noopener">在线练习</a></p>
+<p>方括号的句号就表示句号.<br>表达式 <code>ar[.]</code> 匹配 <code>ar.</code>字符串</p>
+<pre>
+"ar[.]" => A garage is a good place to park a c<a href="#learn-regex"><strong>ar.</strong></a>
+</pre>
+
+<p><a href="https://regex101.com/r/wL3xtE/1" target="_blank" rel="noopener">在线练习</a></p>
+<h3 id="2-2-1-否定字符集"><a href="#2-2-1-否定字符集" class="headerlink" title="2.2.1 否定字符集"></a>2.2.1 否定字符集</h3><p>一般来说 <code>^</code> 表示一个字符串的开头, 但它用在一个方括号的开头的时候, 它表示这个字符集是否定的.<br>例如, 表达式<code>[^c]ar</code> 匹配一个后面跟着<code>ar</code>的除了<code>c</code>的任意字符.</p>
+<pre>
+"[^c]ar" => The car <a href="#learn-regex"><strong>par</strong></a>ked in the <a href="#learn-regex"><strong>gar</strong></a>age.
+</pre>
+
+<p><a href="https://regex101.com/r/nNNlq3/1" target="_blank" rel="noopener">在线练习</a></p>
+<h2 id="2-3-重复次数"><a href="#2-3-重复次数" class="headerlink" title="2.3 重复次数"></a>2.3 重复次数</h2><p>后面跟着元字符 <code>+</code>, <code>*</code> or <code>?</code> 的, 用来指定匹配子模式的次数.<br>这些元字符在不同的情况下有着不同的意思.</p>
+<h3 id="2-3-1-号"><a href="#2-3-1-号" class="headerlink" title="2.3.1 * 号"></a>2.3.1 <code>*</code> 号</h3><p><code>*</code>号匹配 在<code>*</code>之前的字符出现<code>大于等于0</code>次.<br>例如, 表达式 <code>a*</code> 匹配以0或更多个a开头的字符, 因为有0个这个条件, 其实也就匹配了所有的字符. 表达式<code>[a-z]*</code> 匹配一个行中所有以小写字母开头的字符串.</p>
+<pre>
+"[a-z]*" => T<a href="#learn-regex"><strong>he</strong></a> <a href="#learn-regex"><strong>car</strong></a> <a href="#learn-regex"><strong>parked</strong></a> <a href="#learn-regex"><strong>in</strong></a> <a href="#learn-regex"><strong>the</strong></a> <a href="#learn-regex"><strong>garage</strong></a> #21.
+</pre>
+
+<p><a href="https://regex101.com/r/7m8me5/1" target="_blank" rel="noopener">在线练习</a></p>
+<p><code>*</code>字符和<code>.</code>字符搭配可以匹配所有的字符<code>.*</code>.<br><code>*</code>和表示匹配空格的符号<code>\s</code>连起来用, 如表达式<code>\s*cat\s*</code>匹配0或更多个空格开头和0或更多个空格结尾的cat字符串.</p>
+<pre>
+"\s*cat\s*" => The fat<a href="#learn-regex"><strong> cat </strong></a>sat on the con<a href="#learn-regex"><strong>cat</strong></a>enation.
+</pre>
+
+<p><a href="https://regex101.com/r/gGrwuz/1" target="_blank" rel="noopener">在线练习</a></p>
+<h3 id="2-3-2-号"><a href="#2-3-2-号" class="headerlink" title="2.3.2 + 号"></a>2.3.2 <code>+</code> 号</h3><p><code>+</code>号匹配<code>+</code>号之前的字符出现 &gt;=1 次.<br>例如表达式<code>c.+t</code> 匹配以首字母<code>c</code>开头以<code>t</code>结尾,中间跟着任意个字符的字符串.</p>
+<pre>
+"c.+t" => The fat <a href="#learn-regex"><strong>cat sat on the mat</strong></a>.
+</pre>
+
+<p><a href="https://regex101.com/r/Dzf9Aa/1" target="_blank" rel="noopener">在线练习</a></p>
+<h3 id="2-3-3-号"><a href="#2-3-3-号" class="headerlink" title="2.3.3 ? 号"></a>2.3.3 <code>?</code> 号</h3><p>在正则表达式中元字符 <code>?</code> 标记在符号前面的字符为可选, 即出现 0 或 1 次.<br>例如, 表达式 <code>[T]?he</code> 匹配字符串 <code>he</code> 和 <code>The</code>.</p>
+<pre>
+"[T]he" => <a href="#learn-regex"><strong>The</strong></a> car is parked in the garage.
+</pre>
+
+<p><a href="https://regex101.com/r/cIg9zm/1" target="_blank" rel="noopener">在线练习</a></p>
+<pre>
+"[T]?he" => <a href="#learn-regex"><strong>The</strong></a> car is parked in t<a href="#learn-regex"><strong>he</strong></a> garage.
+</pre>
+
+<p><a href="https://regex101.com/r/kPpO2x/1" target="_blank" rel="noopener">在线练习</a></p>
+<h2 id="2-4-号"><a href="#2-4-号" class="headerlink" title="2.4 {} 号"></a>2.4 <code>{}</code> 号</h2><p>在正则表达式中 <code>{}</code> 是一个量词, 常用来一个或一组字符可以重复出现的次数.<br>例如,  表达式 <code>[0-9]{2,3}</code> 匹配最少 2 位最多 3 位 0~9 的数字.</p>
+<pre>
+"[0-9]{2,3}" => The number was 9.<a href="#learn-regex"><strong>999</strong></a>7 but we rounded it off to <a href="#learn-regex"><strong>10</strong></a>.0.
+</pre>
+
+<p><a href="https://regex101.com/r/juM86s/1" target="_blank" rel="noopener">在线练习</a></p>
+<p>我们可以省略第二个参数.<br>例如, <code>[0-9]{2,}</code> 匹配至少两位 0~9 的数字.</p>
+<pre>
+"[0-9]{2,}" => The number was 9.<a href="#learn-regex"><strong>9997</strong></a> but we rounded it off to <a href="#learn-regex"><strong>10</strong></a>.0.
+</pre>
+
+<p><a href="https://regex101.com/r/Gdy4w5/1" target="_blank" rel="noopener">在线练习</a></p>
+<p>如果逗号也省略掉则表示重复固定的次数.<br>例如, <code>[0-9]{3}</code> 匹配3位数字</p>
+<pre>
+"[0-9]{3}" => The number was 9.<a href="#learn-regex"><strong>999</strong></a>7 but we rounded it off to 10.0.
+</pre>
+
+<p><a href="https://regex101.com/r/Sivu30/1" target="_blank" rel="noopener">在线练习</a></p>
+<h2 id="2-5-特征标群"><a href="#2-5-特征标群" class="headerlink" title="2.5 (...) 特征标群"></a>2.5 <code>(...)</code> 特征标群</h2><p>特征标群是一组写在 <code>(...)</code> 中的子模式. 例如之前说的 <code>{}</code> 是用来表示前面一个字符出现指定次数. 但如果在 <code>{}</code> 前加入特征标群则表示整个标群内的字符重复 N 次. 例如, 表达式 <code>(ab)*</code> 匹配连续出现 0 或更多个 <code>ab</code>.</p>
+<p>我们还可以在 <code>()</code> 中用或字符 <code>|</code> 表示或. 例如, <code>(c|g|p)ar</code> 匹配 <code>car</code> 或 <code>gar</code> 或 <code>par</code>.</p>
+<pre>
+"(c|g|p)ar" => The <a href="#learn-regex"><strong>car</strong></a> is <a href="#learn-regex"><strong>par</strong></a>ked in the <a href="#learn-regex"><strong>gar</strong></a>age.
+</pre>
+
+<p><a href="https://regex101.com/r/tUxrBG/1" target="_blank" rel="noopener">在线练习</a></p>
+<h2 id="2-6-或运算符"><a href="#2-6-或运算符" class="headerlink" title="2.6 | 或运算符"></a>2.6 <code>|</code> 或运算符</h2><p>或运算符就表示或, 用作判断条件.</p>
+<p>例如 <code>(T|t)he|car</code> 匹配 <code>(T|t)he</code> 或 <code>car</code>.</p>
+<pre>
+"(T|t)he|car" => <a href="#learn-regex"><strong>The</strong></a> <a href="#learn-regex"><strong>car</strong></a> is parked in <a href="#learn-regex"><strong>the</strong></a> garage.
+</pre>
+
+<p><a href="https://regex101.com/r/fBXyX0/1" target="_blank" rel="noopener">在线练习</a></p>
+<h2 id="2-7-转码特殊字符"><a href="#2-7-转码特殊字符" class="headerlink" title="2.7 转码特殊字符"></a>2.7 转码特殊字符</h2><p>反斜线 <code>\</code> 在表达式中用于转码紧跟其后的字符. 用于指定 <code>{ } [ ] / \ + * . $ ^ | ?</code> 这些特殊字符. 如果想要匹配这些特殊字符则要在其前面加上反斜线 <code>\</code>.</p>
+<p>例如 <code>.</code> 是用来匹配除换行符外的所有字符的. 如果想要匹配句子中的 <code>.</code> 则要写成 <code>\.</code> 以下这个例子 <code>\.?</code>是选择性匹配<code>.</code></p>
+<pre>
+"(f|c|m)at\.?" => The <a href="#learn-regex"><strong>fat</strong></a> <a href="#learn-regex"><strong>cat</strong></a> sat on the <a href="#learn-regex"><strong>mat.</strong></a>
+</pre>
+
+<p><a href="https://regex101.com/r/DOc5Nu/1" target="_blank" rel="noopener">在线练习</a></p>
+<h2 id="2-8-锚点"><a href="#2-8-锚点" class="headerlink" title="2.8 锚点"></a>2.8 锚点</h2><p>在正则表达式中, 想要匹配指定开头或结尾的字符串就要使用到锚点. <code>^</code> 指定开头, <code>$</code> 指定结尾.</p>
+<h3 id="2-8-1-号"><a href="#2-8-1-号" class="headerlink" title="2.8.1 ^ 号"></a>2.8.1 <code>^</code> 号</h3><p><code>^</code> 用来检查匹配的字符串是否在所匹配字符串的开头.</p>
+<p>例如, 在 <code>abc</code> 中使用表达式 <code>^a</code> 会得到结果 <code>a</code>. 但如果使用 <code>^b</code> 将匹配不到任何结果. 因为在字符串 <code>abc</code> 中并不是以 <code>b</code> 开头.</p>
+<p>例如, <code>^(T|t)he</code> 匹配以 <code>The</code> 或 <code>the</code> 开头的字符串.</p>
+<pre>
+"(T|t)he" => <a href="#learn-regex"><strong>The</strong></a> car is parked in <a href="#learn-regex"><strong>the</strong></a> garage.
+</pre>
+
+<p><a href="https://regex101.com/r/5ljjgB/1" target="_blank" rel="noopener">在线练习</a></p>
+<pre>
+"^(T|t)he" => <a href="#learn-regex"><strong>The</strong></a> car is parked in the garage.
+</pre>
+
+<p><a href="https://regex101.com/r/jXrKne/1" target="_blank" rel="noopener">在线练习</a></p>
+<h3 id="2-8-2-号"><a href="#2-8-2-号" class="headerlink" title="2.8.2 $ 号"></a>2.8.2 <code>$</code> 号</h3><p>同理于 <code>^</code> 号, <code>$</code> 号用来匹配字符是否是最后一个.</p>
+<p>例如, <code>(at\.)$</code> 匹配以 <code>at.</code> 结尾的字符串.</p>
+<pre>
+"(at\.)" => The fat c<a href="#learn-regex"><strong>at.</strong></a> s<a href="#learn-regex"><strong>at.</strong></a> on the m<a href="#learn-regex"><strong>at.</strong></a>
+</pre>
+
+<p><a href="https://regex101.com/r/y4Au4D/1" target="_blank" rel="noopener">在线练习</a></p>
+<pre>
+"(at\.)$" => The fat cat. sat. on the m<a href="#learn-regex"><strong>at.</strong></a>
+</pre>
+
+<p><a href="https://regex101.com/r/t0AkOd/1" target="_blank" rel="noopener">在线练习</a></p>
+<h2 id="3-简写字符集"><a href="#3-简写字符集" class="headerlink" title="3. 简写字符集"></a>3. 简写字符集</h2><p>正则表达式提供一些常用的字符集简写. 如下:</p>
 <table>
 <thead>
 <tr>
-<th>RestartSec</th>
-<th>与 Restart 有点相关性，如果这个服务被关闭，然后需要重新启动 时，大概要 sleep 多少时间再重新启动的意思。默认是 100ms （毫 秒）。</th>
+<th style="text-align:center">简写</th>
+<th>描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Description</td>
-<td>就是当我们使用 systemctl list-units 时，会输出给管理员看的简易说明！当然，使用 systemctl status 输出的此服务的说明，也是这个项目！</td>
+<td style="text-align:center">.</td>
+<td>除换行符外的所有字符</td>
 </tr>
 <tr>
-<td>Documentation</td>
-<td>这个项目在提供管理员能够进行进一步的文件查询的功能！提供的文 件可以是如下的数据： Documentation=<a href="http://www..." target="_blank" rel="noopener">http://www...</a>. Documentation=man:sshd（8） Documentation=file:/etc/ssh/sshd_config</td>
+<td style="text-align:center">\w</td>
+<td>匹配所有字母数字, 等同于 <code>[a-zA-Z0-9_]</code></td>
 </tr>
 <tr>
-<td>After</td>
-<td>说明此unit是在哪个daemon启动之后才启动的意思。基本上仅是说 明服务启动的顺序而已，并没有强制要求里头的服务一定要启动后此 unit 才能启动。 以 sshd.service 的内容为例，该文件提到 After 后面 有 network.target 以及 sshd-keygen.service，但是若这两个 unit 没有 启动而强制启动 sshd.service 的话， 那么 sshd.service 应该还是能够 启动的！这与 Requires 的设置是有差异的喔！</td>
+<td style="text-align:center">\W</td>
+<td>匹配所有非字母数字, 即符号, 等同于: <code>[^\w]</code></td>
 </tr>
 <tr>
-<td>Before</td>
-<td>与 After 的意义相反，是在什么服务启动前最好启动这个服务的意思。 不过这仅是规范服务启动的顺序，<strong>并非强制要求</strong>的意思。</td>
+<td style="text-align:center">\d</td>
+<td>匹配数字: <code>[0-9]</code></td>
 </tr>
 <tr>
-<td>Requires</td>
-<td>明确的定义此 unit 需要在哪个 daemon 启动后才能够启动！就是设置 相依服务啦！如果在此项设置的前导服务没有启动，那么此 unit 就不会被启动！</td>
+<td style="text-align:center">\D</td>
+<td>匹配非数字: <code>[^\d]</code></td>
 </tr>
 <tr>
-<td>Wants</td>
-<td>与 Requires 刚好相反，规范的是这个 unit 之后最好还要启动什么服务 比较好的意思！不过，并没有明确的规范就是了！主要的目的是希望 创建让使用者比较好操作的环境。 因此，这个 Wants 后面接的服务如 果没有启动，其实不会影响到这个 unit 本身！</td>
+<td style="text-align:center">\s</td>
+<td>匹配所有空格字符, 等同于: <code>[\t\n\f\r\p{Z}]</code></td>
 </tr>
 <tr>
-<td>Conflicts</td>
-<td>代表冲突的服务！亦即这个项目后面接的服务如果有启动，那么我们 这个 unit 本身就不能启动！我们 unit 有启动，则此项目后的服务就不能启动！ 反正就是冲突性的检查啦！</td>
+<td style="text-align:center">\S</td>
+<td>匹配所有非空格字符: <code>[^\s]</code></td>
 </tr>
 <tr>
-<td></td>
-<td></td>
+<td style="text-align:center">\f</td>
+<td>匹配一个换页符</td>
 </tr>
 <tr>
-<td></td>
+<td style="text-align:center">\n</td>
+<td>匹配一个换行符</td>
+</tr>
+<tr>
+<td style="text-align:center">\r</td>
+<td>匹配一个回车符</td>
+</tr>
+<tr>
+<td style="text-align:center">\t</td>
+<td>匹配一个制表符</td>
+</tr>
+<tr>
+<td style="text-align:center">\v</td>
+<td>匹配一个垂直制表符</td>
+</tr>
+<tr>
+<td style="text-align:center">\p</td>
+<td>匹配 CR/LF (等同于 <code>\r\n</code>)，用来匹配 DOS 行终止符</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Service部分:</strong></p>
+<h2 id="4-零宽度断言-前后预查"><a href="#4-零宽度断言-前后预查" class="headerlink" title="4. 零宽度断言(前后预查)"></a>4. 零宽度断言(前后预查)</h2><p>先行断言和后发断言都属于<strong>非捕获簇</strong>(不捕获文本 ，也不针对组合计进行计数).<br>先行断言用于判断所匹配的格式是否在另一个确定的格式之前, 匹配结果不包含该确定格式(仅作为约束).</p>
+<p>例如, 我们想要获得所有跟在 <code>$</code> 符号后的数字, 我们可以使用正后发断言 <code>(?&lt;=\$)[0-9\.]*</code>.<br>这个表达式匹配 <code>$</code> 开头, 之后跟着 <code>0,1,2,3,4,5,6,7,8,9,.</code> 这些字符可以出现大于等于 0 次.</p>
+<p>零宽度断言如下:</p>
 <table>
 <thead>
 <tr>
-<th>设置参数</th>
-<th>参数意义说明</th>
+<th style="text-align:center">符号</th>
+<th>描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Type</td>
-<td>说明这个 daemon 启动的方式，会影响到 ExecStart 喔！一般来说， 有下面几种类型 simple：默认值，这个 daemon 主要由 ExecStart 接 的指令串来启动，启动后常驻于内存中。forking：由 ExecStart 启动 的程序通过 spawns 延伸出其他子程序来作为此 daemon 的主要服 务。原生的父程序在启动结束后就会终止运行。 传统的 unit 服务大 多属于这种项目，例如 httpd 这个 WWW 服务，当 httpd 的程序因为 运行过久因此即将终结了，则 systemd 会再重新生出另一个子程序持 续运行后， 再将父程序删除。据说这样的性能比较好！！oneshot： 与 simple 类似，不过这个程序在工作完毕后就结束了，不会常驻在 内存中。dbus：与 simple 类似，但这个 daemon 必须要在取得一个 D-Bus 的名称后，才会继续运行！因此设置这个项目时，通常也要设 置 BusName= 才行！idle：与 simple 类似，意思是，要执行这个 daemon 必须要所有的工作都顺利执行完毕后才会执行。这类的 daemon 通常是开机到最后才执行即可的服务！比较重要的项目大概是 simple, forking 与 oneshot 了！毕竟很多服务需要子程序 （forking），而有更多的动作只需要在开机的时候执行一次 （oneshot），例如文件系统的检查与挂载啊等等的。</td>
+<td style="text-align:center">?=</td>
+<td>正先行断言-存在</td>
 </tr>
 <tr>
-<td>EnvironmentFile</td>
-<td>可以指定启动脚本的环境配置文件！例如 sshd.service 的配置文件写 入到 /etc/sysconfig/sshd 当中！你也可以使用 Environment= 后面接 多个不同的 Shell 变量来给予设置！</td>
+<td style="text-align:center">?!</td>
+<td>负先行断言-排除</td>
 </tr>
 <tr>
-<td>ExecStart</td>
-<td>就是<strong>实际执行此 daemon 的指令或脚本程序</strong>。你也可以使用 ExecStartPre （之前） 以及 ExecStartPost （之后） 两个设置项目 来在实际启动服务前，进行额外的指令行为。 但是你得要特别注意的 是，指令串仅接受“指令 参数 参数…”的格式，不能接受 &lt;, &gt;, &gt;&gt;,\</td>
-<td>, &amp; 等特殊字符，很多的 bash 语法也不支持喔！ 所以，要使用这些特殊 的字符时，最好直接写入到指令脚本里面去！不过，上述的语法也不 是完全不能用，亦即，若要支持比较完整的 bash 语法，那你得要使 用 Type=oneshot 才行喔！ 其他的 Type 才不能支持这些字符。</td>
+<td style="text-align:center">?&lt;=</td>
+<td>正后发断言-存在</td>
 </tr>
 <tr>
-<td>ExecStop</td>
-<td>与 systemctl stop 的执行有关，关闭此服务时所进行的指令。</td>
-</tr>
-<tr>
-<td>ExecReload</td>
-<td>与 systemctl reload 有关的指令行为</td>
-</tr>
-<tr>
-<td>Restart</td>
-<td>当设置 Restart=1 时，则当此 daemon 服务终止后，会再次的启动此 服务。举例来说，如果你在 tty2 使用文字界面登陆，操作完毕后登 出，基本上，这个时候 tty2 就已经结束服务了。 但是你会看到屏幕 又立刻产生一个新的 tty2 的登陆画面等待你的登陆！那就是 Restart 的功能！除非使用 systemctl 强制将此服务关闭，否则这个服务会源 源不绝的一直重复产生！</td>
-</tr>
-<tr>
-<td>RemainAfterExit</td>
-<td>当设置为 RemainAfterExit=1 时，则当这个 daemon 所属的所有程序 都终止之后，此服务会再尝试启动。这对于 Type=oneshot 的服务很 有帮助！</td>
-</tr>
-<tr>
-<td>TimeoutSec</td>
-<td>若这个服务在启动或者是关闭时，因为某些缘故导致无法顺利“正常 启动或正常结束”的情况下，则我们要等多久才进入“强制结束”的状 态！</td>
-</tr>
-<tr>
-<td>KillMode</td>
-<td>可以是 process, control-group, none 的其中一种，如果是 process 则 daemon 终止时，只会终止主要的程序 （ExecStart 接的后面那串 指令），如果是 control-group 时， 则由此 daemon 所产生的其他 control-group 的程序，也都会被关闭。如果是 none 的话，则没有程 序会被关闭喔！</td>
+<td style="text-align:center">?&lt;!</td>
+<td>负后发断言-排除</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Install部分：</strong></p>
+<h3 id="4-1-正先行断言"><a href="#4-1-正先行断言" class="headerlink" title="4.1 ?=... 正先行断言"></a>4.1 <code>?=...</code> 正先行断言</h3><p><code>?=...</code> 正先行断言, 表示第一部分表达式之后必须跟着 <code>?=...</code>定义的表达式.</p>
+<p>返回结果只包含满足匹配条件的第一部分表达式.<br>定义一个正先行断言要使用 <code>()</code>. 在括号内部使用一个问号和等号: <code>(?=...)</code>. </p>
+<p>正先行断言的内容写在括号中的等号后面.<br>例如, 表达式 <code>(T|t)he(?=\sfat)</code> 匹配 <code>The</code> 和 <code>the</code>, 在括号中我们又定义了正先行断言 <code>(?=\sfat)</code> ,即 <code>The</code> 和 <code>the</code> 后面紧跟着 <code>(空格)fat</code>.</p>
+<pre>
+"(T|t)he(?=\sfat)" => <a href="#learn-regex"><strong>The</strong></a> fat cat sat on the mat.
+</pre>
+
+<p><a href="https://regex101.com/r/IDDARt/1" target="_blank" rel="noopener">在线练习</a></p>
+<h3 id="4-2-负先行断言"><a href="#4-2-负先行断言" class="headerlink" title="4.2 ?!... 负先行断言"></a>4.2 <code>?!...</code> 负先行断言</h3><p>负先行断言 <code>?!</code> 用于筛选所有匹配结果, 筛选条件为 其后不跟随着断言中定义的格式.<br><code>正先行断言</code>  定义和 <code>负先行断言</code> 一样, 区别就是 <code>=</code> 替换成 <code>!</code> 也就是 <code>(?!...)</code>.</p>
+<p>表达式 <code>(T|t)he(?!\sfat)</code> 匹配 <code>The</code> 和 <code>the</code>, 且其后不跟着 <code>(空格)fat</code>.</p>
+<pre>
+"(T|t)he(?!\sfat)" => The fat cat sat on <a href="#learn-regex"><strong>the</strong></a> mat.
+</pre>
+
+<p><a href="https://regex101.com/r/V32Npg/1" target="_blank" rel="noopener">在线练习</a></p>
+<h3 id="4-3-lt-正后发断言"><a href="#4-3-lt-正后发断言" class="headerlink" title="4.3 ?&lt;= ... 正后发断言"></a>4.3 <code>?&lt;= ...</code> 正后发断言</h3><p>正后发断言 记作<code>(?&lt;=...)</code> 用于筛选所有匹配结果, 筛选条件为 其前跟随着断言中定义的格式.<br>例如, 表达式 <code>(?&lt;=(T|t)he\s)(fat|mat)</code> 匹配 <code>fat</code> 和 <code>mat</code>, 且其前跟着 <code>The</code> 或 <code>the</code>.</p>
+<pre>
+"(?<=(t|t)he\s)(fat|mat)" => The <a href="#learn-regex"><strong>fat</strong></a> cat sat on the <a href="#learn-regex"><strong>mat</strong></a>.
+</=(t|t)he\s)(fat|mat)"></pre>
+
+<p><a href="https://regex101.com/r/avH165/1" target="_blank" rel="noopener">在线练习</a></p>
+<h3 id="4-4-lt-负后发断言"><a href="#4-4-lt-负后发断言" class="headerlink" title="4.4 ?&lt;!... 负后发断言"></a>4.4 <code>?&lt;!...</code> 负后发断言</h3><p>负后发断言 记作 <code>(?&lt;!...)</code> 用于筛选所有匹配结果, 筛选条件为 其前不跟随着断言中定义的格式.<br>例如, 表达式 <code>(?&lt;!(T|t)he\s)(cat)</code> 匹配 <code>cat</code>, 且其前不跟着 <code>The</code> 或 <code>the</code>.</p>
+<pre>
+"(?&lt;!(T|t)he\s)(cat)" => The cat sat on <a href="#learn-regex"><strong>cat</strong></a>.
+</pre>
+
+<p><a href="https://regex101.com/r/8Efx5G/1" target="_blank" rel="noopener">在线练习</a></p>
+<h2 id="5-标志"><a href="#5-标志" class="headerlink" title="5. 标志"></a>5. 标志</h2><p>标志也叫模式修正符, 因为它可以用来修改表达式的搜索结果.<br>这些标志可以任意的组合使用, 它也是整个正则表达式的一部分.</p>
 <table>
 <thead>
 <tr>
-<th>设置参数</th>
-<th></th>
+<th style="text-align:center">标志</th>
+<th>描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>WantedBy</td>
-<td>这个设置后面接的大部分是 *.target unit ！意思是，这个 unit 本身是附挂在 哪一个 target unit 下面的！一般来说，大多的服务性质的 unit 都是附挂在 multi-user.target 下面！</td>
+<td style="text-align:center">i</td>
+<td>忽略大小写.</td>
 </tr>
 <tr>
-<td>Also</td>
-<td>当目前这个 unit 本身被 enable 时，Also 后面接的 unit 也请 enable 的意 思！也就是具有相依性的服务可以写在这里呢！</td>
+<td style="text-align:center">g</td>
+<td>全局搜索.</td>
 </tr>
 <tr>
-<td>Alias</td>
-<td>进行一个链接的别名的意思！当 systemctl enable 相关的服务时，则此服务会进行链接文件的创建！以 multi-user.target 为例，这个家伙是用来作为 默认操作环境 default.target 的规划， 因此当你设置用成 default.target 时，这个 /etc/systemd/system/default.target 就会链接到 /usr/lib/systemd/system/multi-user.target 啰！</td>
+<td style="text-align:center">m</td>
+<td>多行的: 锚点元字符 <code>^</code> <code>$</code> 工作范围在每行的起始.</td>
 </tr>
 </tbody>
 </table>
-<h2 id="编写自己的服务"><a href="#编写自己的服务" class="headerlink" title="编写自己的服务"></a>编写自己的服务</h2><p>假设编写一个备份tmpfs的服务，脚本放在/backup下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">cp -r /dev/shm/* ~/tmpbackup/</span><br></pre></td></tr></table></figure>
-<p>接下来设计名为backup.service的启动脚本设置,路径为/etc/systemd/system/backup.service</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=备份tmpfs文件夹</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=/bin/bash /backup/backup.sh</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
-<p><img src="https://user-images.githubusercontent.com/25349066/64802745-ec35e100-d5bd-11e9-91f8-497610dc4775.png" alt="image"></p>
-<p>之后便编写完成</p>
+<h3 id="5-1-忽略大小写-Case-Insensitive"><a href="#5-1-忽略大小写-Case-Insensitive" class="headerlink" title="5.1 忽略大小写 (Case Insensitive)"></a>5.1 忽略大小写 (Case Insensitive)</h3><p>修饰语 <code>i</code> 用于忽略大小写.<br>例如, 表达式 <code>/The/gi</code> 表示在全局搜索 <code>The</code>, 在后面的 <code>i</code> 将其条件修改为忽略大小写, 则变成搜索 <code>the</code> 和 <code>The</code>, <code>g</code> 表示全局搜索.</p>
+<pre>
+"The" => <a href="#learn-regex"><strong>The</strong></a> fat cat sat on the mat.
+</pre>
+
+<p><a href="https://regex101.com/r/dpQyf9/1" target="_blank" rel="noopener">在线练习</a></p>
+<pre>
+"/The/gi" => <a href="#learn-regex"><strong>The</strong></a> fat cat sat on <a href="#learn-regex"><strong>the</strong></a> mat.
+</pre>
+
+<p><a href="https://regex101.com/r/ahfiuh/1" target="_blank" rel="noopener">在线练习</a></p>
+<h3 id="5-2-全局搜索-Global-search"><a href="#5-2-全局搜索-Global-search" class="headerlink" title="5.2 全局搜索 (Global search)"></a>5.2 全局搜索 (Global search)</h3><p>修饰符 <code>g</code> 常用于执行一个全局搜索匹配, 即(不仅仅返回第一个匹配的, 而是返回全部).<br>例如, 表达式 <code>/.(at)/g</code> 表示搜索 任意字符(除了换行) + <code>at</code>, 并返回全部结果.</p>
+<pre>
+"/.(at)/" => The <a href="#learn-regex"><strong>fat</strong></a> cat sat on the mat.
+</pre>
+
+<p><a href="https://regex101.com/r/jnk6gM/1" target="_blank" rel="noopener">在线练习</a></p>
+<pre>
+"/.(at)/g" => The <a href="#learn-regex"><strong>fat</strong></a> <a href="#learn-regex"><strong>cat</strong></a> <a href="#learn-regex"><strong>sat</strong></a> on the <a href="#learn-regex"><strong>mat</strong></a>.
+</pre>
+
+<p><a href="https://regex101.com/r/dO1nef/1" target="_blank" rel="noopener">在线练习</a></p>
+<h3 id="5-3-多行修饰符-Multiline"><a href="#5-3-多行修饰符-Multiline" class="headerlink" title="5.3 多行修饰符 (Multiline)"></a>5.3 多行修饰符 (Multiline)</h3><p>多行修饰符 <code>m</code> 常用于执行一个多行匹配.</p>
+<p>像之前介绍的 <code>(^,$)</code> 用于检查格式是否是在待检测字符串的开头或结尾. 但我们如果想要它在每行的开头和结尾生效, 我们需要用到多行修饰符 <code>m</code>.</p>
+<p>例如, 表达式 <code>/at(.)?$/gm</code> 表示小写字符 <code>a</code> 后跟小写字符 <code>t</code> , 末尾可选除换行符外任意字符. 根据 <code>m</code> 修饰符, 现在表达式匹配每行的结尾.</p>
+<pre>
+"/.at(.)?$/" => The fat
+                cat sat
+                on the <a href="#learn-regex"><strong>mat.</strong></a>
+</pre>
+
+<p><a href="https://regex101.com/r/hoGMkP/1" target="_blank" rel="noopener">在线练习</a></p>
+<pre>
+"/.at(.)?$/gm" => The <a href="#learn-regex"><strong>fat</strong></a>
+                  cat <a href="#learn-regex"><strong>sat</strong></a>
+                  on the <a href="#learn-regex"><strong>mat.</strong></a>
+</pre>
+
+<p><a href="https://regex101.com/r/E88WE2/1" target="_blank" rel="noopener">在线练习</a></p>
+<h3 id="6-贪婪匹配与惰性匹配-Greedy-vs-lazy-matching"><a href="#6-贪婪匹配与惰性匹配-Greedy-vs-lazy-matching" class="headerlink" title="6. 贪婪匹配与惰性匹配 (Greedy vs lazy matching)"></a>6. 贪婪匹配与惰性匹配 (Greedy vs lazy matching)</h3><p>正则表达式默认采用贪婪匹配模式，在该模式下意味着会匹配尽可能长的子串。我们可以使用 <code>?</code> 将贪婪匹配模式转化为惰性匹配模式。</p>
+<pre>
+"/(.*at)/" => <a href="#learn-regex"><strong>The fat cat sat on the mat</strong></a>. </pre>
+
+<p><a href="https://regex101.com/r/AyAdgJ/1" target="_blank" rel="noopener">在线练习</a></p>
+<pre>
+"/(.*?at)/" => <a href="#learn-regex"><strong>The fat</strong></a> cat sat on the mat. </pre>
+
+<p><a href="https://regex101.com/r/AyAdgJ/2" target="_blank" rel="noopener">在线练习</a></p>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者: <a href="http://watermelon1gugu.github.io">Arch Yi</a>
-            <p>原文链接: <a href="http://watermelon1gugu.github.io/2019/09/09/systemd/">http://watermelon1gugu.github.io/2019/09/09/systemd/</a>
-            <p>发表日期: <a href="http://watermelon1gugu.github.io/2019/09/09/systemd/">September 9th 2019, 12:19:12 pm</a>
+            <p>原文链接: <a href="http://watermelon1gugu.github.io/2019/10/04/learn-regex/">http://watermelon1gugu.github.io/2019/10/04/learn-regex/</a>
+            <p>发表日期: <a href="http://watermelon1gugu.github.io/2019/10/04/learn-regex/">October 4th 2019, 3:02:49 pm</a>
             <p>版权声明: 本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -640,17 +811,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/2019/09/12/jetbrain/" title= jetbrain相关技巧 >
-                    <div class="nextTitle">jetbrain相关技巧</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/2019/04/23/czfxbj/" title= 春招复习笔记 >
-                    <div class="prevTitle">春招复习笔记</div>
+                <a href= "/2019/09/12/jetbrain/" title= jetbrain相关技巧 >
+                    <div class="prevTitle">jetbrain相关技巧</div>
                 </a>
             
         </li>
@@ -788,7 +954,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-number">1.</span> <span class="toc-text">参考文献</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#daemon与service"><span class="toc-number">2.</span> <span class="toc-text">daemon与service</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#systemd的好处"><span class="toc-number">3.</span> <span class="toc-text">systemd的好处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#system配置文件目录"><span class="toc-number">4.</span> <span class="toc-text">system配置文件目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#systemd的unit分类说明"><span class="toc-number">5.</span> <span class="toc-text">systemd的unit分类说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#通过systemctl管理单一服务-service-unit-的启动-开机启动与观察状态"><span class="toc-number">6.</span> <span class="toc-text">通过systemctl管理单一服务(service unit)的启动/开机启动与观察状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#systemctl针对service类型的配置文件"><span class="toc-number">7.</span> <span class="toc-text">systemctl针对service类型的配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#配置文件目录相关"><span class="toc-number">7.1.</span> <span class="toc-text">配置文件目录相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#systemctl配置文件设置项目"><span class="toc-number">7.2.</span> <span class="toc-text">systemctl配置文件设置项目</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编写自己的服务"><span class="toc-number">8.</span> <span class="toc-text">编写自己的服务</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是正则表达式"><span class="toc-number">1.</span> <span class="toc-text">什么是正则表达式?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#目录"><span class="toc-number"></span> <span class="toc-text">目录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-基本匹配"><span class="toc-number">1.</span> <span class="toc-text">1. 基本匹配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-元字符"><span class="toc-number">2.</span> <span class="toc-text">2. 元字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-点运算符"><span class="toc-number">3.</span> <span class="toc-text">2.1 点运算符 .</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-字符集"><span class="toc-number">4.</span> <span class="toc-text">2.2 字符集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-否定字符集"><span class="toc-number">4.1.</span> <span class="toc-text">2.2.1 否定字符集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-重复次数"><span class="toc-number">5.</span> <span class="toc-text">2.3 重复次数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-号"><span class="toc-number">5.1.</span> <span class="toc-text">2.3.1 * 号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-号"><span class="toc-number">5.2.</span> <span class="toc-text">2.3.2 + 号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-号"><span class="toc-number">5.3.</span> <span class="toc-text">2.3.3 ? 号</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-号"><span class="toc-number">6.</span> <span class="toc-text">2.4 {} 号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-特征标群"><span class="toc-number">7.</span> <span class="toc-text">2.5 (...) 特征标群</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6-或运算符"><span class="toc-number">8.</span> <span class="toc-text">2.6 | 或运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-7-转码特殊字符"><span class="toc-number">9.</span> <span class="toc-text">2.7 转码特殊字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8-锚点"><span class="toc-number">10.</span> <span class="toc-text">2.8 锚点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-8-1-号"><span class="toc-number">10.1.</span> <span class="toc-text">2.8.1 ^ 号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-8-2-号"><span class="toc-number">10.2.</span> <span class="toc-text">2.8.2 $ 号</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-简写字符集"><span class="toc-number">11.</span> <span class="toc-text">3. 简写字符集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-零宽度断言-前后预查"><span class="toc-number">12.</span> <span class="toc-text">4. 零宽度断言(前后预查)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-正先行断言"><span class="toc-number">12.1.</span> <span class="toc-text">4.1 ?=... 正先行断言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-负先行断言"><span class="toc-number">12.2.</span> <span class="toc-text">4.2 ?!... 负先行断言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-lt-正后发断言"><span class="toc-number">12.3.</span> <span class="toc-text">4.3 ?&lt;= ... 正后发断言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-lt-负后发断言"><span class="toc-number">12.4.</span> <span class="toc-text">4.4 ?&lt;!... 负后发断言</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-标志"><span class="toc-number">13.</span> <span class="toc-text">5. 标志</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-忽略大小写-Case-Insensitive"><span class="toc-number">13.1.</span> <span class="toc-text">5.1 忽略大小写 (Case Insensitive)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-全局搜索-Global-search"><span class="toc-number">13.2.</span> <span class="toc-text">5.2 全局搜索 (Global search)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-多行修饰符-Multiline"><span class="toc-number">13.3.</span> <span class="toc-text">5.3 多行修饰符 (Multiline)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-贪婪匹配与惰性匹配-Greedy-vs-lazy-matching"><span class="toc-number">13.4.</span> <span class="toc-text">6. 贪婪匹配与惰性匹配 (Greedy vs lazy matching)</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
