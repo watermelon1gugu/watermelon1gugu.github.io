@@ -339,6 +339,79 @@
     
     
     <article class="index-post">
+        <a class="abstract-title" href = "/2019/11/02/wcout-problem/" >
+            
+                <span>C++ wcout的奇妙问题</span>
+        </a>
+        <div class="abstract-content">
+            问题阐述
+
+
+大概就是
+12wchat_t s[3] = &#123;'a','b','c'&#125;;wcout&lt;&lt;s;
+会导致之后的其他输出都不会被输出
+问题排查这样的问题当然要从源码下手了
+首先查看其对应的&lt;&lt;重载函数
+
+可以看到其调用了__put_character_sequence()函数，传入了os、str和length(str)
+继续深入
+
+貌似在函数开头是对传入参数进行param check的代码，出于直觉（偷懒），直接对if结果进行断点调试。
+果不其然，原代码
+12345678if (__pad_and_output(_Ip(__os),   ...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/02</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "C++">C++</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2019/10/16/eps/" >
+            
+                <span>easy py server 源码解析</span>
+        </a>
+        <div class="abstract-content">
+            太忙了 以后写
+
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "eps">eps</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
         <a class="abstract-title" href = "/2019/10/04/learn-regex/" >
             
                 <span>(转载)learn-regex</span>
@@ -681,75 +754,6 @@ MVCC
         <a class="post-tag" href="javascript:void(0);" data-tags = "图谱">图谱</a>
     
 </div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/09/18/mutex-Semaphore/" >
-            
-                <span>浅谈信号量与互斥锁的区别和联系</span>
-        </a>
-        <div class="abstract-content">
-            区别信号量与普通整型变量的区别
-信号量是整型变量（是否非负取决于其实现方式），除初始化以外，只能通过两个标准原子操作 wait，signal来访问。
-
-对信号量的操作被称为PV原语（不可中断、不可分割的程序），而普通整型变量可以在任何语句中被访问。
-
-
-
-信号量与互斥锁间的区别互斥：某一资源同时只允许一个访问者对其进行访问，具有唯一性和排它性。但互斥无法限制访问者的顺序，是无序的。
-同步：是指在互斥的基础上（大多数情况），通过其他机制（）实现访问者对资源的有序访问，大多数情况下，同步已经实现了互斥（比如对所有写入资源操作）。
-根本区别：互斥量用于线程的互斥，信号量用于线程的同步，互斥不能...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/09/18</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "mutex">mutex</a>
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "semaphore">semaphore</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/2018/09/03/small-problem/" >
-            
-                <span>开发小问题及其解决方法</span>
-        </a>
-        <div class="abstract-content">
-            
-spring  Date类型格式化 
-
-springboot 2.0 配置 spring.jackson.date-format 不生效
-
-mysql新建utf8格式数据库
-123456789101112CREATE DATABASE isdc DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;CREATE DATABASE 的语法：CREATE &#123;DATABASE | SCHEMA&#125; [IF NOT EXISTS] db_name[create_specification [, create_specificat...
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/09/03</span>
-            </div>
-            <!-- tags  -->
             
         </div>
     </article>
@@ -1260,9 +1264,51 @@ mysql新建utf8格式数据库
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 32
+        Total : 34
         </div>
         <!-- search  -->
         
@@ -1275,6 +1321,16 @@ mysql新建utf8格式数据库
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/02</span><a class="archive-post-title" href= "/2019/11/02/wcout-problem/" >C++ wcout的奇妙问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/2019/10/16/eps/" >easy py server 源码解析</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1456,11 +1512,15 @@ mysql新建utf8格式数据库
     
         <span class="sidebar-tag-name" data-tags="笔试"><span class="iconfont-archer">&#xe606;</span>笔试</span>
     
+        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
+    
+        <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
+    
+        <span class="sidebar-tag-name" data-tags="TIM"><span class="iconfont-archer">&#xe606;</span>TIM</span>
+    
         <span class="sidebar-tag-name" data-tags="Leetcode"><span class="iconfont-archer">&#xe606;</span>Leetcode</span>
     
         <span class="sidebar-tag-name" data-tags="233"><span class="iconfont-archer">&#xe606;</span>233</span>
-    
-        <span class="sidebar-tag-name" data-tags="进程间通信"><span class="iconfont-archer">&#xe606;</span>进程间通信</span>
     
         <span class="sidebar-tag-name" data-tags="JVM"><span class="iconfont-archer">&#xe606;</span>JVM</span>
     
@@ -1468,17 +1528,15 @@ mysql新建utf8格式数据库
     
         <span class="sidebar-tag-name" data-tags="model"><span class="iconfont-archer">&#xe606;</span>model</span>
     
-        <span class="sidebar-tag-name" data-tags="springBoot"><span class="iconfont-archer">&#xe606;</span>springBoot</span>
+        <span class="sidebar-tag-name" data-tags="eps"><span class="iconfont-archer">&#xe606;</span>eps</span>
     
-        <span class="sidebar-tag-name" data-tags="JPA"><span class="iconfont-archer">&#xe606;</span>JPA</span>
-    
-        <span class="sidebar-tag-name" data-tags="TIM"><span class="iconfont-archer">&#xe606;</span>TIM</span>
+        <span class="sidebar-tag-name" data-tags="进程间通信"><span class="iconfont-archer">&#xe606;</span>进程间通信</span>
     
         <span class="sidebar-tag-name" data-tags="HelloWorld"><span class="iconfont-archer">&#xe606;</span>HelloWorld</span>
     
-        <span class="sidebar-tag-name" data-tags="isdc"><span class="iconfont-archer">&#xe606;</span>isdc</span>
-    
         <span class="sidebar-tag-name" data-tags="解决办法"><span class="iconfont-archer">&#xe606;</span>解决办法</span>
+    
+        <span class="sidebar-tag-name" data-tags="isdc"><span class="iconfont-archer">&#xe606;</span>isdc</span>
     
         <span class="sidebar-tag-name" data-tags="jetbrain"><span class="iconfont-archer">&#xe606;</span>jetbrain</span>
     
@@ -1486,15 +1544,15 @@ mysql新建utf8格式数据库
     
         <span class="sidebar-tag-name" data-tags="39"><span class="iconfont-archer">&#xe606;</span>39</span>
     
+        <span class="sidebar-tag-name" data-tags="makefile"><span class="iconfont-archer">&#xe606;</span>makefile</span>
+    
         <span class="sidebar-tag-name" data-tags="正则表达式"><span class="iconfont-archer">&#xe606;</span>正则表达式</span>
     
-        <span class="sidebar-tag-name" data-tags="makefile"><span class="iconfont-archer">&#xe606;</span>makefile</span>
+        <span class="sidebar-tag-name" data-tags="modelMapper"><span class="iconfont-archer">&#xe606;</span>modelMapper</span>
     
         <span class="sidebar-tag-name" data-tags="mutex"><span class="iconfont-archer">&#xe606;</span>mutex</span>
     
         <span class="sidebar-tag-name" data-tags="semaphore"><span class="iconfont-archer">&#xe606;</span>semaphore</span>
-    
-        <span class="sidebar-tag-name" data-tags="modelMapper"><span class="iconfont-archer">&#xe606;</span>modelMapper</span>
     
         <span class="sidebar-tag-name" data-tags="mapper"><span class="iconfont-archer">&#xe606;</span>mapper</span>
     
@@ -1506,11 +1564,11 @@ mysql新建utf8格式数据库
     
         <span class="sidebar-tag-name" data-tags="mysql"><span class="iconfont-archer">&#xe606;</span>mysql</span>
     
+        <span class="sidebar-tag-name" data-tags="opencv"><span class="iconfont-archer">&#xe606;</span>opencv</span>
+    
         <span class="sidebar-tag-name" data-tags="mybatis-generator"><span class="iconfont-archer">&#xe606;</span>mybatis-generator</span>
     
         <span class="sidebar-tag-name" data-tags="pip"><span class="iconfont-archer">&#xe606;</span>pip</span>
-    
-        <span class="sidebar-tag-name" data-tags="opencv"><span class="iconfont-archer">&#xe606;</span>opencv</span>
     
         <span class="sidebar-tag-name" data-tags="SpringBoot"><span class="iconfont-archer">&#xe606;</span>SpringBoot</span>
     
@@ -1520,11 +1578,13 @@ mysql新建utf8格式数据库
     
         <span class="sidebar-tag-name" data-tags="stream"><span class="iconfont-archer">&#xe606;</span>stream</span>
     
+        <span class="sidebar-tag-name" data-tags="C++"><span class="iconfont-archer">&#xe606;</span>C++</span>
+    
         <span class="sidebar-tag-name" data-tags="systemd"><span class="iconfont-archer">&#xe606;</span>systemd</span>
     
-        <span class="sidebar-tag-name" data-tags="volatile"><span class="iconfont-archer">&#xe606;</span>volatile</span>
-    
         <span class="sidebar-tag-name" data-tags="ubuntu"><span class="iconfont-archer">&#xe606;</span>ubuntu</span>
+    
+        <span class="sidebar-tag-name" data-tags="volatile"><span class="iconfont-archer">&#xe606;</span>volatile</span>
     
         <span class="sidebar-tag-name" data-tags="春招"><span class="iconfont-archer">&#xe606;</span>春招</span>
     
